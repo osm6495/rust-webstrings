@@ -287,20 +287,19 @@ Owen McCarthy - contact@owen.biz
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/osm6495/rust-webstrings
+[contributors-shield]: https://img.shields.io/github/contributors/osm6495/rust-webstrings?style=flat&color=orange
 [contributors-url]: https://github.com/osm6495/rust-webstrings/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/osm6495/rust-webstrings
+[forks-shield]: https://img.shields.io/github/forks/osm6495/rust-webstrings?style=flat&color=orange
 [forks-url]: https://github.com/osm6495/rust-webstrings/network/members
-[stars-shield]: https://img.shields.io/github/stars/osm6495/rust-webstrings
+[stars-shield]: https://img.shields.io/github/stars/osm6495/rust-webstrings?style=flat&color=orange
 [stars-url]: https://github.com/osm6495/rust-webstrings/stargazers
-[issues-shield]: https://img.shields.io/github/issues/osm6495/rust-webstrings
+[issues-shield]: https://img.shields.io/github/issues/osm6495/rust-webstrings?style=flat&color=orange
 [issues-url]: https://github.com/osm6495/rust-webstrings/issues
-[license-shield]: https://img.shields.io/github/license/osm6495/rust-webstrings
+[license-shield]: https://img.shields.io/github/license/osm6495/rust-webstrings?style=flat&color=orange
 [license-url]: https://github.com/osm6495/rust-webstrings/blob/main/LICENSE
-[downloads-shield]: https://img.shields.io/github/downloads/osm6495/rust-webstrings/total
+[downloads-shield]: https://img.shields.io/github/downloads/osm6495/rust-webstrings/total?style=flat&color=orange
 [downloads-url]: https://github.com/osm6495/rust-webstrings/graphs/contributors
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-blue
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-gray
 [linkedin-url]: https://www.linkedin.com/in/owen-mccarthy-060827192/
 [medium-shield]: https://img.shields.io/badge/-Medium-white
 [medium-url]: https://medium.com/@omccarth333
-[product-screenshot]: images/screenshot.png
