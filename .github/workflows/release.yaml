@@ -18,12 +18,6 @@ jobs:
           toolchain: stable
           override: true
 
-      - name: Configure Environment
-        run: |
-          echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
-          echo "OPENSSL_STATIC=1" >> $GITHUB_ENV
-          echo "OPENSSL_DIR=/usr/include/openssl" >> $GITHUB_ENV
-
       - name: Build Release Binary
         run: cargo build --release --target x86_64-apple-darwin
 
@@ -48,6 +42,12 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
+
+      - name: Configure Environment
+        run: |
+          echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
+          echo "OPENSSL_STATIC=1" >> $GITHUB_ENV
+          echo "OPENSSL_DIR=/usr/include/openssl" >> $GITHUB_ENV
 
       - name: Add target x86_64-unknown-linux-musl
         run: rustup target add x86_64-unknown-linux-musl
