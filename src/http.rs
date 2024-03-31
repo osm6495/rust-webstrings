@@ -6,8 +6,9 @@ pub struct HttpResponse {
     pub body: String,
 }
 
-pub async fn get(url: &String) -> Result<HttpResponse, reqwest::Error> {
-    let res = reqwest::Client::new()
+pub async fn get(url: &String, client: &reqwest::Client) -> Result<HttpResponse, reqwest::Error> {
+    let res = client
+        .clone()
         .get(url)
         .header(
             USER_AGENT,
