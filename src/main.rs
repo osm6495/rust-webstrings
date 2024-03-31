@@ -52,7 +52,7 @@ struct Args {
 
     /// Use file instead of URL
     #[arg(short = 'f', long = "file")]
-    file: Option<String>,
+    file: bool,
 
     /// URL to search
     url: Option<String>,
@@ -197,20 +197,23 @@ async fn main() {
     let finding_map: Arc<DashSet<String>> = Arc::new(DashSet::new());
 
     // Parse input and add to url_map
-    if let Some(file) = args.file {
-        std::fs::read_to_string(file)
-            .expect("Failed to read file")
-            .lines()
-            .map(|line| {
-                if line.starts_with("http://") || line.starts_with("https://") {
-                    line.to_string()
-                } else {
-                    format!("https://{}", line)
-                }
-            })
-            .for_each(|url| {
-                url_map.insert(url, 0);
-            });
+    if args.file {
+        if let Some(path) = args.url {
+            // First arg (usually a single url) is now expecting a filepath
+            std::fs::read_to_string(path)
+                .expect("Failed to read file")
+                .lines()
+                .map(|line| {
+                    if line.starts_with("http://") || line.starts_with("https://") {
+                        line.to_string()
+                    } else {
+                        format!("https://{}", line)
+                    }
+                })
+                .for_each(|url| {
+                    url_map.insert(url, 0);
+                });
+        };
     } else if let Some(url) = args.url {
         if url.starts_with("http://") || url.starts_with("https://") {
             url_map.insert(url, 0);
