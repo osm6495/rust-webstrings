@@ -121,9 +121,9 @@ If you would like to build from the source code instead, that process is easy as
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
-A web scanner to crawl links, JS strings, and CSP URLs for interesting secrets and vulnerabilities.
 ```
+A web scanner to crawl links, JS strings, and CSP URLs for interesting secrets and vulnerabilities.
+
 Usage: webstrings [OPTIONS] [URL]
 
 Arguments:
@@ -132,8 +132,11 @@ Arguments:
 Options:
   -c, --cite               Include sources of findings
   -a, --all                Include noisy regex patterns
-  -t, --threads <THREADS>  Number of concurrent requests, with 10 being the default [default: 10]
+      --depth <DEPTH>      Depth of scan, with 255 being unlimited [default: 2]
+  -t, --threads <THREADS>  Number of concurrent requests [default: 25]
   -d, --debug              Debug mode
+      --timer              Measure duration of scan
+      --no-spinner         Don't print the loading spinner for cleaner output
   -u, --urls               Print all URLs instead of secrets or strings
   -s, --secrets            Find secrets with regex patterns rather than strings
   -f, --file <FILE>        Use file instead of URL
@@ -162,9 +165,9 @@ webstrings -afsu linkfile.txt
 ```
 which would go through each URL in `linkfile.txt` and search for any secrets on the page or in any of the links found in the html or js, including found URLs in the output and all of the findings from rules that generate large amounts of false positives.
 
-If you want to output to a file you can pipe the output of the command to a file in Linux:
+If you want to output to a file you can pipe the output of the command to a file in Linux, though be sure to use --no-spinner to avoid saving the spinner frames too:
 ```sh
-webstrings "https://example.com" > out.txt
+webstrings --no-spinner "https://example.com" > out.txt
 ```
 
 ### Validating your Findings
@@ -241,7 +244,7 @@ To find where your secret finding is in the webpage:
 - [ ] Better minified JS parsing
     - Minified JS often ends up outputting huge chunks of JS code rather than actual strings, quotes and other delimiters are sometimes inaccurate. I'd like to look into using tree-sitter for this and see if the results are better.
 - [ ] Allow regex input files to add secret patterns
-- [ ] Improve speed when working with large input lists
+- [x] Improve speed when working with large input lists
 
 See the [open issues](https://github.com/osm6495/webstorm/issues) for a full list of proposed features (and known issues).
 
