@@ -43,14 +43,26 @@ jobs:
           toolchain: stable
           override: true
 
-      - name: Configure Environment
-        run: |
-          echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
-          echo "OPENSSL_STATIC=1" >> $GITHUB_ENV
-          echo "OPENSSL_DIR=/usr/include/openssl" >> $GITHUB_ENV
-
       - name: Add target x86_64-unknown-linux-musl
         run: rustup target add x86_64-unknown-linux-musl
+
+      - name: Install musl-tools and OpenSSL (static)
+        run: |
+          sudo apt-get update
+          sudo apt-get install musl-tools libssl-dev pkg-config -y
+          sudo apt-get install musl-dev -y
+
+      - name: Configure Environment for OpenSSL
+        run: |
+          echo "OPENSSL_STATIC=true" >> $GITHUB_ENV
+          echo "PKG_CONFIG_ALLOW_CROSS=true" >> $GITHUB_ENV
+
+      - name: Build Release Binary
+        run: |
+          export OPENSSL_DIR=/usr/include/openssl
+          export OPENSSL_LIB_DIR=/usr/lib/x86_64-linux-gnu
+          export OPENSSL_INCLUDE_DIR=/usr/include/openssl
+          cargo build --release --target x86_64-unknown-linux-musl
 
       - name: Build Release Binary
         run: cargo build --release --target x86_64-unknown-linux-musl
