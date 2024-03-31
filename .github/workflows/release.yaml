@@ -5,26 +5,79 @@ on:
     types: [created]
 
 jobs:
-  release:
-    name: release ${{ matrix.target }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        include:
-          - target: x86_64-pc-windows-gnu
-            archive: zip
-          - target: x86_64-unknown-linux-musl
-            archive: tar.gz tar.xz tar.zst
-          - target: x86_64-apple-darwin
-            archive: zip
+  build-macos:
+    name: Build for macOS
+    runs-on: macos-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Compile and release
-        uses: rust-build/rust-build.action@v1.4.5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MACOSX_DEPLOYMENT_TARGET: '10.12'
+      - uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
         with:
-          RUSTTARGET: ${{ matrix.target }}
-          ARCHIVE_TYPES: ${{ matrix.archive }}
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Build Release Binary
+        run: cargo build --release --target x86_64-apple-darwin
+
+      - name: Zip the macOS binary
+        run: zip -j macos_binary.zip target/x86_64-apple-darwin/release/webstrings
+
+      - name: Upload macOS Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: webstrings-macos.zip
+          path: macos_binary.zip
+
+  build-linux:
+    name: Build for Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Build Release Binary
+        run: cargo build --release --target x86_64-unknown-linux-musl
+
+      - name: Zip the Linux binary
+        run: zip -j linux_binary.zip target/x86_64-unknown-linux-musl/release/webstrings
+
+      - name: Upload Linux Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: webstrings-linux.zip
+          path: linux_binary.zip
+
+  build-windows:
+    name: Build for Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          default: true
+          components: rustfmt, clippy
+
+      - name: Build Release Binary
+        run: cargo build --release --target x86_64-pc-windows-gnu
+
+      - name: Zip the Windows binary
+        run: Compress-Archive -Path target\x86_64-pc-windows-gnu\release\webstrings.exe -DestinationPath windows_binary.zip
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: webstrings-windows.zip
+          path: windows_binary.zip
