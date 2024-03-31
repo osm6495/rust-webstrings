@@ -50,6 +50,10 @@ struct Args {
     #[arg(short = 's', long = "secrets", default_value = "false")]
     secrets: bool,
 
+    /// Don't search for strings, only urls or secrets
+    #[arg(long = "no-strings", default_value = "false")]
+    no_strings: bool,
+
     /// Use file instead of URL
     #[arg(short = 'f', long = "file")]
     file: bool,
@@ -62,6 +66,7 @@ struct WorkerOptions {
     debug: bool,
     urls: bool,
     secrets: bool,
+    no_strings: bool,
     cite: bool,
     noisy: bool,
     depth: u8,
@@ -150,7 +155,8 @@ async fn process_url(
                 .await
                 .expect("Worker failed to send output");
         }
-    } else {
+    }
+    if !options.no_strings {
         if url.ends_with(".js") {
             for string in js::extract_strings(&res.body) {
                 let message: String;
@@ -246,6 +252,7 @@ async fn main() {
             debug: args.debug,
             urls: args.urls,
             secrets: args.secrets,
+            no_strings: args.no_strings,
             cite: args.cite,
             noisy: args.all,
             depth: args.depth,
